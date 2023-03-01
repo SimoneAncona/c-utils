@@ -1,6 +1,7 @@
 #include "../utils/utils.h"
 
-int main(int argc, char **argv) { 
+int main(int argc, char **argv) 
+{
 	int_vector_t vector;	// declate a vector variable
 	vector = int_vec_new_vector(10);	// initialize the vector with a length of 10
 
