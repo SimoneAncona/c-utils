@@ -5,7 +5,7 @@
  * @version 1.1 (utils 1.1)
  * @date 2023-10-07
  *
- * @copyright Copyright (c) 2022
+ * @copyright Copyright (c) 2023
  *
  */
 
