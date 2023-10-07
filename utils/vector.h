@@ -87,6 +87,7 @@ void str_vec_append(string_vector_t, string_t);	// since v1.0
 // void ustr_vec_append(ustring_vector_t, unique_string_t);	// since v1.2
 #define __vec_get__(v, i) v->__v__[(size_t)i % v->__len__]	// since v1.0
 #define __vec_set__(v, i, e) v->__v__[(size_t) i % v->__len__] = e	// since v1.0
+#define vec_set(v, i, e) __vec_set__(v, i, any_new(e))	
 any_t vec_get(vector_t, size_t);	// since v1.0
 int_t int_vec_get(int_vector_t, size_t);	// since v1.0
 uint_t uint_vec_get(uint_vector_t, size_t);	// since v1.0
@@ -96,7 +97,6 @@ double double_vec_get(double_vector_t, size_t);	// since v1.0
 bool bool_vec_get(boolean_vector_t, size_t);	// since v1.0
 string_t str_vec_get(string_vector_t, size_t);	// since v1.0
 // unique_string_t ustr_vec_get(ustring_vector_t, size_t);	// since v1.2
-void vec_set(vector_t, size_t, any_t);	// since v1.0
 void int_vec_set(int_vector_t, size_t, int_t);	// since v1.0
 void uint_vec_set(uint_vector_t, size_t, uint_t);	// since v1.0
 void byte_vec_set(byte_vector_t, size_t, uint8_t);	// since v1.0
@@ -398,7 +398,6 @@ double double_vec_get(double_vector_t v, size_t i) { return __vec_get__(v, i); }
 bool bool_vec_get(boolean_vector_t v, size_t i) { return __vec_get__(v, i); }
 string_t str_vec_get(string_vector_t v, size_t i) { return __vec_get__(v, i); }
 unique_string_t ustr_vec_get(ustring_vector_t v, size_t i) { return __vec_get__(v, i); }
-void vec_set(vector_t v, size_t i, any_t e) { __vec_set__(v, i, e); }
 void int_vec_set(int_vector_t v, size_t i, int_t e) { __vec_set__(v, i, e); }
 void uint_vec_set(uint_vector_t v, size_t i, uint_t e) { __vec_set__(v, i, e); }
 void byte_vec_set(byte_vector_t v, size_t i, byte_t e) { __vec_set__(v, i, e); }

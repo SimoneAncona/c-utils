@@ -50,6 +50,7 @@ extern string_t str_new_string(char_ptr_t);
 	float*: __any_float_ptr__,\
 	double*: __any_double_ptr__,\
 	bool*: __any_boolean_ptr__,\
+	any_t: __ret_any__,\
 	default: __any_uint__\
 ) (X)
 
@@ -79,6 +80,7 @@ any_t __any_byte_ptr__(uint8_t*);	// since v1.0
 any_t __any_float_ptr__(float*);	// since v1.0	
 any_t __any_double_ptr__(double*);	// since v1.0
 any_t __any_boolean_ptr__(bool*);	// since v1.0
+any_t __ret_any__(any_t);	// since v1.1
 any_t any_null();	// since v1.0
 bool any_is_int(any_t);	// since v1.0
 bool any_is_uint(any_t);	// since v1.0
@@ -419,6 +421,11 @@ any_t any_null()
 bool __any_is_null__(any_t a)
 {
 	return a == NULL || a->__t__ == NONE_TYPE && a->__value__ == 0;
+}
+
+any_t __ret_any__(any_t a)
+{
+	return a;
 }
 
 bool any_equals(any_t a, any_t b)

@@ -4,20 +4,29 @@ Maps are used to associate a key to a value. In programming, a map is an unorder
 
 #include "utils.h"
 
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
     map_t map = map_new_map();
     map_insert(map, "key1", "value1");
     map_insert(map, "key2", "value2");
 
-    printf("%s\n", to_string(map)); // expected output: {"key1": "value1", "key2": "value2"}
+    printf("map: %s\n", to_string(map)); // expected output: {"key1": "value1", "key2": "value2"}
 
     map_remove(map, "key1");
-    printf("%s\n", to_string(map_get(map, "key1")));   // expected output: null
-    printf("%s\n", to_string(map_get(map, "key2")));   // expected output: "value2"
+    printf("get 'key1': %s\n", to_string(map_get(map, "key1"))); // expected output: null
+    printf("get 'key2': %s\n", to_string(map_get(map, "key2"))); // expected output: "value2"
 
+    if (!map_insert(map, "key2", "value3"))
+        printf("key2 already exists\n");
+
+    map_insert(map, "key3", "value3");
+
+    printf("map: %s\n", to_string(map));    // expected output: {"key2": "value2", "key3": "value3"}
+
+    // map iterator
     for (iterator_t i = it(map); i.ptr != end(map); it_inc(&i))
     {
-        printf("%s: %s\n", ((map_t)i.ptr)->__k__, ((map_t)i.ptr)->__v__);
+        printf("%s: %s\n", to_string(it_get_key(i)), to_string(it_get_value(i)));
     }
+    printf("%s: %s\n", to_string(it_get_key(rit(map))), to_string(it_get_value(rit(map))));
 }

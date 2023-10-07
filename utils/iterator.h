@@ -36,6 +36,8 @@ extern size_t str_len(string_t);
 #define it_get_key(i) ((map_t)i.ptr)->__k__
 #define it_get_value(i) ((map_t)i.ptr)->__v__
 
+#define it_get_el(i) *((__vector_struct_t__*)i.ptr)->__v__
+
 iterator_t __string_it__(string_t s)
 {
     iterator_t it;
