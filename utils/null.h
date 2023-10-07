@@ -6,6 +6,7 @@
 bool __int_is_null__(int_t); // since v1.0
 bool __double_is_null__(double); // since v1.0
 bool __ptr_is_null__(void*); // since v1.0
+bool __float_is_null__(float); // since v1.1
 
 // STRING library
 extern string_t str_null_string(void); // since v1.0
@@ -38,6 +39,6 @@ extern ustring_vector_t ustr_vec_null_vector(); // since v1.0
 bool __int_is_null__(int_t n) { return n == 0; }
 bool __double_is_null__(double n) { return n == 0; }
 bool __ptr_is_null__(void *p) { return p == NULL; }
-
+bool __float_is_null__(float n) { return n == 0; }
 
 #endif

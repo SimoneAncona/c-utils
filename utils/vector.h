@@ -18,6 +18,8 @@
 
 #include "type.h"
 
+extern bool str_destroy(string_t);
+
 #define __vec_null_check__(v) v->__v__ == NULL && v->__len__ == 0	// since v1.0
 #define vec_len(v) v->__len__	// since v1.0
 vector_t vec_new_vector(size_t);	// since v1.0
@@ -30,7 +32,15 @@ double_vector_t double_vec_new_vector(size_t);	// since v1.0
 boolean_vector_t bool_vec_new_vector(size_t);	// since v1.0
 string_vector_t str_vec_new_vector(size_t);	// since v1.0
 // ustring_vector_t ustr_vec_new_vector(size_t);	// since v1.2
-#define vec_destroy(X) free(X)	// since v1.0
+#define vec_destroy(x) _Generic((x),\
+	vector_t: __vec_destroy__,\
+	string_vector_t: __str_vector_destroy__,\
+	default: free\
+) (x); x = NULL	// since v1.0
+
+void __vec_destroy__(vector_t);	// since v1.1
+void __str_vector_destroy__(string_vector_t);	// since v1.1
+
 size_t __vec_len__(vector_t);	// since v1.0
 size_t __int_vec_len__(int_vector_t);	// since v1.0
 size_t __uint_vec_len__(uint_vector_t);	// since v1.0
@@ -412,5 +422,17 @@ vector_t vec_from_float_array(float *array, size_t len) { __vec_from_array__(arr
 vector_t vec_from_double_array(double *array, size_t len) { __vec_from_array__(array, len); }
 vector_t vec_from_boolean_array(bool *array, size_t len) { __vec_from_array__(array, len); }
 vector_t vec_from_string_array(string_t *array, size_t len) { __vec_from_array__(array, len); }
+
+void __vec_destroy__(vector_t v)
+{
+	for (size_t i = 0; i < v->__len__; i++)
+		free(__vec_get__(v, i));
+}
+
+void __str_vector_destroy__(string_vector_t v)
+{
+	for (size_t i = 0; i < v->__len__; i++)
+		str_destroy(__vec_get__(v, i));
+}
 
 #endif

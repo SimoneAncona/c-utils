@@ -37,7 +37,7 @@
 	#define NOT_FOUND (size_t) -1
 #endif
 
-#define if_null_to_string(x) if (x == NULL) return str_new_string("null")
+#define __if_null_to_string__(x) if (x == NULL) return str_new_string("null")
 
 string_t __str_pool_ref__(char_ptr_t);	// since v1.0
 // string_t str_new_string(char_ptr_t);	// since v1.0
@@ -457,7 +457,7 @@ string_t __str_to_string__(string_t s)
 
 string_t vec_to_string(vector_t v)
 {
-	if_null_to_string(v);
+	__if_null_to_string__(v);
 	if (vec_len(v) == 0) return str_new_string("[]");
 	string_t s = str_new_string("[");
 	string_t ns = s;
@@ -485,7 +485,7 @@ string_t vec_to_string(vector_t v)
 
 string_t int_vec_to_string(int_vector_t v)
 {
-	if_null_to_string(v);
+	__if_null_to_string__(v);
 	if (vec_len(v) == 0) return str_new_string("[]");
 	string_t s = str_new_string("[");
 	string_t ns = s;
@@ -518,7 +518,7 @@ string_t int_vec_to_string(int_vector_t v)
 
 string_t uint_vec_to_string(uint_vector_t v)
 {
-	if_null_to_string(v);
+	__if_null_to_string__(v);
 	if (vec_len(v) == 0) return str_new_string("[]");
 	string_t s = str_new_string("[");
 	string_t ns = s;
@@ -551,7 +551,7 @@ string_t uint_vec_to_string(uint_vector_t v)
 
 string_t byte_vec_to_string(byte_vector_t v)
 {
-	if_null_to_string(v);
+	__if_null_to_string__(v);
 	if (vec_len(v) == 0) return str_new_string("[]");
 	string_t s = str_new_string("[");
 	string_t ns = s;
@@ -584,7 +584,7 @@ string_t byte_vec_to_string(byte_vector_t v)
 
 string_t float_vec_to_string(float_vector_t v)
 {
-	if_null_to_string(v);
+	__if_null_to_string__(v);
 	if (vec_len(v) == 0) return str_new_string("[]");
 	string_t s = str_new_string("[");
 	string_t ns = s;
@@ -617,7 +617,7 @@ string_t float_vec_to_string(float_vector_t v)
 
 string_t double_vec_to_string(double_vector_t v)
 {
-	if_null_to_string(v);
+	__if_null_to_string__(v);
 	if (vec_len(v) == 0) return str_new_string("[]");
 	string_t s = str_new_string("[");
 	string_t ns = s;
@@ -650,7 +650,7 @@ string_t double_vec_to_string(double_vector_t v)
 
 string_t bool_vec_to_string(boolean_vector_t v)
 {
-	if_null_to_string(v);
+	__if_null_to_string__(v);
 	if (vec_len(v) == 0) return str_new_string("[]");
 	string_t s = str_new_string("[");
 	string_t ns = s;
@@ -688,7 +688,7 @@ string_t bool_vec_to_string(boolean_vector_t v)
 
 string_t str_vec_to_string(string_vector_t v)
 {
-	if_null_to_string(v);
+	__if_null_to_string__(v);
 	if (v == NULL) return str_new_string("null");
 	if (vec_len(v) == 0) return str_new_string("[]");
 	string_t s = str_new_string("[");
@@ -722,7 +722,7 @@ string_t str_vec_to_string(string_vector_t v)
 
 string_t map_to_string(map_t m)
 {
-	if_null_to_string(m);
+	__if_null_to_string__(m);
 	if (m->__k__ == NULL) return str_new_string("{}");
 	string_t s = str_new_string("{");
 	if (m->__next__ == NULL) {
@@ -795,7 +795,7 @@ string_t map_to_string(map_t m)
 
 string_t any_to_string(any_t a)
 {
-	if_null_to_string(a);
+	__if_null_to_string__(a);
 	switch (any_typeof(a))
 	{
 	case INTEGER:

@@ -33,7 +33,7 @@
 	uint16_t: __int_is_null__,\
 	uint32_t: __int_is_null__,\
 	uint64_t: __int_is_null__,\
-	float: __double_is_null__,\
+	float: __float_is_null__,\
 	double: __double_is_null__,\
 	void*: __ptr_is_null__,\
 	string_t: __str_is_null__,\

@@ -143,5 +143,4 @@ typedef struct __map_struct__
 typedef __map_struct_t__ *map_t;
 typedef map_t *map_ptr_t;
 
-
 #endif

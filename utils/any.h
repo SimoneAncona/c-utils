@@ -125,6 +125,7 @@ double *any_get_double_ptr(any_t);	// since v1.0
 bool *any_get_boolean_ptr(any_t);	// since v1.0
 string_ptr_t any_get_string_ptr(any_t);	// since v1.0
 type_t any_typeof(any_t);	// since v1.0
+bool any_equals(any_t, any_t);	// since v1.1
 // TODO: continue with other types
 
 
@@ -416,7 +417,7 @@ any_t any_null()
 
 bool __any_is_null__(any_t a)
 {
-	return a->__t__ == NONE_TYPE && a->__value__ == 0;
+	return a == NULL || a->__t__ == NONE_TYPE && a->__value__ == 0;
 }
 
 bool any_equals(any_t a, any_t b)
