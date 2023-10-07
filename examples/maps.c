@@ -20,6 +20,8 @@ int main(int argc, char **argv)
         printf("key2 already exists\n");
 
     map_insert(map, "key3", "value3");
+    map_insert(map, "name", "Luca");
+    map_insert(map, "age", 30);
 
     printf("map: %s\n", to_string(map));    // expected output: {"key2": "value2", "key3": "value3"}
 
@@ -27,6 +29,10 @@ int main(int argc, char **argv)
     for (iterator_t i = it(map); i.ptr != end(map); it_inc(&i))
     {
         printf("%s: %s\n", to_string(it_get_key(i)), to_string(it_get_value(i)));
+        if (any_equals(it_get_key(i), any_new("name")))
+            it_get_value(i) = any_new("Simon");
     }
     printf("%s: %s\n", to_string(it_get_key(rit(map))), to_string(it_get_value(rit(map))));
+
+    printf("map: %s\n", to_string(map)); 
 }

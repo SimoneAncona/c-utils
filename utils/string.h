@@ -732,26 +732,13 @@ string_t map_to_string(map_t m)
 		s = str_concat(s, "}");
 		return s;
 	}
-	if (((map_t)m->__next__)->__next__ == NULL)
-	{
-		s = str_concat(s, any_to_string(m->__k__));
-		s = str_concat(s, ": ");
-		s = str_concat(s, any_to_string(m->__v__));
-		s = str_concat(s, ", ");
-		s = str_concat(s, any_to_string(((map_t)m->__next__)->__k__));
-		s = str_concat(s, ": ");
-		s = str_concat(s, any_to_string(((map_t)m->__next__)->__v__));
-		s = str_concat(s, "}");
-		return s;
-	}
-	for (; m->__next__ != NULL && ((map_t)m->__next__)->__next__ != NULL; m = m->__next__) 
+	for (; m->__next__ != NULL; m = m->__next__) 
 	{
 		s = str_concat(s, any_to_string(m->__k__));
 		s = str_concat(s, ": ");
 		s = str_concat(s, any_to_string(m->__v__));
 		s = str_concat(s, ", ");
 	}
-	m = m->__next__;
 	if (m != NULL)
 	{
 		s = str_concat(s, any_to_string(m->__k__));

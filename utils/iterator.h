@@ -36,7 +36,7 @@ extern size_t str_len(string_t);
 #define it_get_key(i) ((map_t)i.ptr)->__k__
 #define it_get_value(i) ((map_t)i.ptr)->__v__
 
-#define it_get_el(i) *((__vector_struct_t__*)i.ptr)->__v__
+#define it_get_el(i) *((any_ptr_t)i.ptr)
 
 iterator_t __string_it__(string_t s)
 {
@@ -51,8 +51,8 @@ iterator_t __string_it__(string_t s)
 iterator_t __vector_it__(vector_t v)
 {
     iterator_t it;
-    it.ptr = (void*)v;
-    it.__size__ = sizeof(__vector_struct_t__);
+    it.ptr = (void*)v->__v__;
+    it.__size__ = sizeof(any_ptr_t);
     it.__type__ = VECTOR;
 
     return it;
@@ -71,7 +71,7 @@ iterator_t __map_it__(map_t m)
 iterator_t __string_rit__(string_t s)
 {
     iterator_t it;
-    it.ptr = (void*) (s + str_len(s) * sizeof(char_t));
+    it.ptr = (void*) (s + str_len(s));
     it.__size__ = sizeof(s);
     it.__type__ = STRING;
 
@@ -81,8 +81,8 @@ iterator_t __string_rit__(string_t s)
 iterator_t __vector_rit__(vector_t v)
 {
     iterator_t it;
-    it.ptr = (void*) (v + v->__len__ * sizeof(__vector_struct_t__));
-    it.__size__ = sizeof(__vector_struct_t__);
+    it.ptr = (void*) (v->__v__ + v->__len__);
+    it.__size__ = sizeof(any_ptr_t);
     it.__type__ = VECTOR;
 
     return it;
