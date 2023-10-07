@@ -18,13 +18,14 @@
 #define UTILS_VERSION_1_0
 
 #include "char.h"
-#include "type.h"
 #include "null.h"
 #include "any.h"
 #include "vector.h"
+#include "map.h"
 #include "unique_string.h"
 #include "string.h"
 #include "common.h"
 #include "io.h"
+#include "type.h"
 
 #endif	// _UTILS_H_

@@ -35,4 +35,9 @@ extern boolean_vector_t bool_vec_null_vector(); // since v1.0
 extern string_vector_t str_vec_null_vector(); // since v1.0
 extern ustring_vector_t ustr_vec_null_vector(); // since v1.0
 
+bool __int_is_null__(int_t n) { return n == 0; }
+bool __double_is_null__(double n) { return n == 0; }
+bool __ptr_is_null__(void *p) { return p == NULL; }
+
+
 #endif

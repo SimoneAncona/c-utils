@@ -11,5 +11,5 @@ int main(int argc, char **argv)
 		int_vec_set(vector, i, i);
 	}
 
-	console_write(any_new(vector));
+	printf("%s", to_string(vector));
 }

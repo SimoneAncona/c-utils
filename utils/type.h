@@ -59,10 +59,10 @@ typedef uint8_t type_t;
 #define BYTE_PTR 						(type_t) 34
 #define BYTE_VECTOR_PTR 				(type_t) 35	// available in utils 1.1
 #define STRING_VECTOR_PTR				(type_t) 36	// available in utils 1.1
-#define ASSOCIATIVE_VECTOR				(type_t) 37	// available in utils 1.1
-#define ASSOCIATIVE_VECTOR_VECTOR		(type_t) 38	// available in utils x.x
-#define ASSOCIATIVE_VECTOR_PTR			(type_t) 39	// available in utils 1.1
-#define ASSOCIATIVE_VECTOR_VECTOR_PTR	(type_t) 40	// available in utils x.x
+#define MAP								(type_t) 37	// available in utils 1.1
+#define MAP_PTR							(type_t) 38	// available in utils x.x
+#define MAP_VECTOR						(type_t) 39	// available in utils 1.1
+#define MAP_VECTOR_PTR					(type_t) 40	// available in utils x.x
 #define FUNCTION						(type_t) 41 // available in utils x.x
 #define STREAM							(type_t) 42 // available in utils 1.1
 #define STREAM_PTR						(type_t) 43 // available in utils 1.1
@@ -76,6 +76,7 @@ typedef uint8_t type_t;
 
 // #ifndef WCHAR
 typedef char char_t;	// since v1.0
+typedef uint8_t byte_t;	// since v1.1
 // #else
 // 	typedef wchar_t char_t;
 // #endif
@@ -98,7 +99,7 @@ typedef unique_string_t *unique_string_ptr_t;	// since v1.0
 typedef struct __any_struct__
 {
 	type_t __t__;
-	void *__value__;
+	uint64_t __value__;
 } __any_struct_t__;
 typedef __any_struct_t__ *any_t;	// since v1.0
 typedef any_t *any_ptr_t;	// since v1.0
@@ -107,7 +108,7 @@ typedef any_t *any_ptr_t;	// since v1.0
 typedef struct __vector_struct__ { any_ptr_t __v__; size_t __len__; size_t __max_len__; } __vector_struct_t__;	// since v1.0
 typedef struct __int_vector_struct__ { int_t *__v__; size_t __len__; size_t __max_len__;} __int_vector_struct_t__;	// since v1.0
 typedef struct __uint_vecor_struct__ { uint_t *__v__; size_t __len__; size_t __max_len__;} __uint_vector_struct_t__;	// since v1.0
-typedef struct __byte_vector_struct__ { uint8_t *__v__; size_t __len__; size_t __max_len__;} __byte_vector_struct_t__;	// since v1.0
+typedef struct __byte_vector_struct__ { byte_t *__v__; size_t __len__; size_t __max_len__;} __byte_vector_struct_t__;	// since v1.0
 typedef struct __float_vector_struct__ { float *__v__; size_t __len__; size_t __max_len__;} __float_vector_struct_t__;	// since v1.0
 typedef struct __double_vector_struct__ { double *__v__; size_t __len__; size_t __max_len__;} __double_vector_struct_t__;	// since v1.0
 typedef struct __boolean_vector_struct__ { bool *__v__; size_t __len__; size_t __max_len__;} __boolean_vector_struct_t__;	// since v1.0
@@ -131,5 +132,16 @@ typedef double_vector_t *double_vector_ptr_t;	// since v1.0
 typedef boolean_vector_t *boolean_vector_ptr_t;	// since v1.0
 typedef string_vector_t *string_vector_ptr_t;	// since v1.0
 typedef ustring_vector_t *ustring_vector_ptr_t;	// since v1.0
+
+typedef struct __map_struct__
+{
+	any_t __k__;
+	any_t __v__;
+	void *__next__;
+} __map_struct_t__;
+
+typedef __map_struct_t__ *map_t;
+typedef map_t *map_ptr_t;
+
 
 #endif

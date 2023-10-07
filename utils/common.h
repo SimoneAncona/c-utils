@@ -50,7 +50,6 @@
 ) (X) // since v1.0
 
 #define to_string(X) _Generic((X),\
-	int8_t: str_from_int,\
 	int16_t: str_from_int,\
 	int32_t: str_from_int,\
 	int64_t: str_from_int,\
@@ -73,6 +72,7 @@
 	boolean_vector_t: bool_vec_to_string,\
 	string_vector_t: str_vec_to_string,\
 	ustring_vector_t: ustr_vec_to_string,\
+	map_t: map_to_string,\
 	default: str_from_uint\
 ) (X) // since v1.0
 

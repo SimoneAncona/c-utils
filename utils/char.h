@@ -7,6 +7,9 @@
  * @copyright Copyright (c) 2022
  * 
  */
+
+#pragma once
+
 #ifndef _CHAR_H_
 #define _CHAR_H_
 #include "type.h"
