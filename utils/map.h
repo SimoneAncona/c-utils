@@ -19,19 +19,19 @@
 
 #define __map_null_check__(m) m->__k__ == NULL;
 
-map_t map_new_map(); // since v1.1
-map_t map_null_map();   // since v1.1
+map_t map_new_map();  // since v1.1
+map_t map_null_map(); // since v1.1
 
 #define map_insert(map, k, v) __map_insert__(map, any_new(k), any_new(v))
 #define map_get(map, k) __map_get__(map, any_new(k))
 #define map_set(map, k, v) __map_set__(map, any_new(k), any_new(v))
 #define map_remove(map, k) __map_remove__(map, any_new(k))
 
-void __map_insert__(map_t, any_t, any_t);  // since v1.1
-any_t __map_get__(map_t, any_t);    // since v1.1
-void __map_set__(map_t, any_t, any_t);  // since v1.1
-bool __map_remove__(map_t, any_t);  // since v1.1
-size_t map_len(map_t);  // since v1.1
+bool __map_insert__(map_t, any_t, any_t); // since v1.1
+any_t __map_get__(map_t, any_t);          // since v1.1
+void __map_set__(map_t, any_t, any_t);    // since v1.1
+bool __map_remove__(map_t, any_t);        // since v1.1
+size_t map_len(map_t);                    // since v1.1
 
 map_t map_new_map()
 {
@@ -54,25 +54,51 @@ size_t map_len(map_t m)
     return len;
 }
 
-void __map_insert__(map_t m, any_t k, any_t v)
+bool __map_insert__(map_t m, any_t k, any_t v)
 {
-    if (m == NULL) return;
+    if (m == NULL)
+        return false;
     if (m->__k__ == NULL)
     {
         m->__k__ = k;
         m->__v__ = v;
         m->__next__ = NULL;
-        return;
+        return true;
+    }
+    if (m->__next__ == NULL)
+    {
+        if (any_equals(m->__k__, k))
+            return false;
+        m->__next__ = malloc(sizeof(__map_struct_t__));
+        m = m->__next__;
+        m->__k__ = k;
+        m->__v__ = v;
+        m->__next__ = NULL;
+        return true;
+    }
+    for (; m->__next__ != NULL; m = m->__next__)
+    {
+        if (any_equals(m->__k__, k))
+            return false;
     }
     m->__next__ = malloc(sizeof(__map_struct_t__));
     m = m->__next__;
     m->__k__ = k;
     m->__v__ = v;
     m->__next__ = NULL;
+    return true;
 }
 
 any_t __map_get__(map_t m, any_t k)
 {
+    if (m == NULL)
+        return NULL;
+    if (m->__next__ == NULL)
+    {
+        if (any_equals(m->__k__, k))
+            return m->__v__;
+        return any_null();
+    }
     for (; m->__next__ != NULL; m = m->__next__)
     {
         if (any_equals(m->__k__, k))

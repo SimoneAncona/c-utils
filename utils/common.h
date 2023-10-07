@@ -12,6 +12,8 @@
 
 #include "type.h"
 
+#pragma once
+
 #define len(X) _Generic((X),\
 	string_t: str_len,\
 	unique_string_t: ustr_len,\

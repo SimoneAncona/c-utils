@@ -143,4 +143,13 @@ typedef struct __map_struct__
 typedef __map_struct_t__ *map_t;
 typedef map_t *map_ptr_t;
 
+typedef struct __iterator_struct_t__
+{
+	size_t __size__;
+	void *ptr;
+	type_t __type__;
+} iterator_t;
+
+typedef iterator_t *iterator_ptr_t;
+
 #endif

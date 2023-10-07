@@ -1,0 +1,1 @@
+clang .\test.c -o a.exe -I..\utils\ -g

@@ -749,7 +749,7 @@ string_t map_to_string(map_t m)
 		s = str_concat(s, any_to_string(m->__k__));
 		s = str_concat(s, ": ");
 		s = str_concat(s, any_to_string(m->__v__));
-		s = str_concat(s, ",");
+		s = str_concat(s, ", ");
 	}
 	m = m->__next__;
 	if (m != NULL)
@@ -1107,6 +1107,7 @@ size_t str_last_index_of(string_t main_str, string_t sub_str)
 
 size_t str_len(string_t s)
 {
+	if (s == NULL) return 0;
 	size_t i = 0;
 	for (; s[i] != __ENDING_CODE__; i++);
 	return i;

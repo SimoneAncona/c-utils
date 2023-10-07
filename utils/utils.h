@@ -14,11 +14,14 @@
 #ifndef _UTILS_H_
 #define _UTILS_H_
 
-#define UTILS_VERSION "1.0"
-#define UTILS_VERSION_1_0
+#define UTILS_VERSION "1.1"
+#define UTILS_VERSION_MAJOR 1
+#define UTILS_VERSION_MINOR 1
+#define UTILS_VERSION_1_1
 
 #include "char.h"
 #include "null.h"
+#include "iterator.h"
 #include "any.h"
 #include "vector.h"
 #include "map.h"

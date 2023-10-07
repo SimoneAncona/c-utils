@@ -33,7 +33,7 @@ extern string_t str_new_string(char_ptr_t);
 	bool: __any_boolean__,\
 	char_t: __any_char__,\
 	string_t: __any_string__,\
-	char_t*: __any_new_string__,\
+	char_ptr_t: __any_cstring__,\
 	/*unique_string_t: __any_ustring__,*/\
 	vector_t: __any_vector__,\
 	int_vector_t: __any_int_vector__,\
@@ -62,6 +62,7 @@ any_t __any_double__(double);	// since v1.0
 any_t __any_boolean__(bool);	// since v1.0
 any_t __any_char__(char_t);	// since v1.0
 any_t __any_string__(string_t);	// since v1.0
+any_t __any_cstring__(char_ptr_t);	// since v1.1
 // any_t __any_ustring__(unique_string_t);	// since v1.1
 any_t __any_vector__(vector_t);	// since v1.0
 any_t __any_int_vector__(int_vector_t);	// since v1.0
@@ -194,13 +195,13 @@ any_t __any_char__(char_t c)
 	return a;
 }
 
-any_t __any_new_string__(char_t *s)
+any_t __any_cstring__(char_ptr_t s)
 {
 	any_t a = __any_alloc__();
-    a->__t__ = STRING;
-    a->__value__ = (uint_t) str_new_string(s);
+	a->__t__ = STRING;
+	a->__value__ = (uint_t) str_new_string(s);
 
-    return a;
+	return a;
 }
 
 any_t __any_string__(string_t s)
