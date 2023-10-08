@@ -128,6 +128,8 @@ number_t str_to_num(string_t s)
         n->__v__[i] = s[i] - '0';
         byte_vec_append(n, 0);
     }
+    vec_reverse(n);
+    if (is_negative) n->__v__[0] = _NEGATIVE_;
 
     return n;
 } 
