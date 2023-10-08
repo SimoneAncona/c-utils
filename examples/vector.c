@@ -20,4 +20,6 @@ int main(int argc, char **argv)
     }
 
     printf("%s\n", to_string(vec));
+
+    int_vector_t ivec = vec_new_int_vector(10);
 }

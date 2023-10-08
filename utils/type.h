@@ -152,4 +152,6 @@ typedef struct __iterator_struct_t__
 
 typedef iterator_t *iterator_ptr_t;
 
+typedef byte_vector_t number_t;
+
 #endif

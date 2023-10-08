@@ -40,6 +40,7 @@ string_vector_t str_vec_new_vector(size_t);	// since v1.0
 
 void __vec_destroy__(vector_t);	// since v1.1
 void __str_vector_destroy__(string_vector_t);	// since v1.1
+#define __primitive_vector_destroy__(v) free(v->__v__); free(v); v = NULL	// since v1.1 
 
 size_t __vec_len__(vector_t);	// since v1.0
 size_t __int_vec_len__(int_vector_t);	// since v1.0
@@ -76,7 +77,7 @@ void __double_vec_res__(double_vector_t);	// since v1.0
 void __bool_vec_res__(boolean_vector_t);	// since v1.0
 void __str_vec_res__(string_vector_t);	// since v1.0
 // void __ustr_vec_res__(ustring_vector_t);	// since v1.2
-void vec_append(vector_t, any_t);	// since v1.0
+#define vec_append(v, e) __vec_append__(v, any_new(e))	// since v1.1
 void int_vec_append(int_vector_t, int_t);	// since v1.0
 void uint_vec_append(uint_vector_t, uint_t);	// since v1.0
 void byte_vec_append(byte_vector_t, uint8_t);	// since v1.0
@@ -379,7 +380,6 @@ void __ustr_vec_res__(ustring_vector_t v)
 	v->__v__ = (unique_string_ptr_t) realloc(v->__v__, sizeof(unique_string_t) * v->__max_len__);
 }
 
-void vec_append(vector_t v, any_t e) { __vec_append__(v, e); }
 void int_vec_append(int_vector_t v, int_t e) { __vec_append__(v, e); }
 void uint_vec_append(uint_vector_t v, uint_t e) { __vec_append__(v, e); }
 void byte_vec_append(byte_vector_t v, byte_t e) { __vec_append__(v, e); }
@@ -410,7 +410,9 @@ void ustr_vec_set(ustring_vector_t v, size_t i, unique_string_t e) { __vec_set__
 #define __vec_from_array__(array, len)\
 	vector_t v = vec_new_vector(len);\
 	for (size_t i = 0; i < len; i++)\
+	{\
 		vec_append(v, any_new(array[i]));\
+	}\
 	return v
 
 

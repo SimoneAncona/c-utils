@@ -66,6 +66,7 @@ string_t bool_vec_to_string(boolean_vector_t);	// since v1.0
 string_t str_vec_to_string(string_vector_t);	// since v1.0
 string_t ustr_vec_to_string(ustring_vector_t);	// since v1.0
 string_t any_to_string(any_t); 	// since v1.0
+string_t num_to_string(number_t);	// since v1.1
 uint8_t str_cmp(string_t, string_t);	// since v1.0
 char_t str_char_at(string_t, size_t);	// since v1.0
 bool str_starts_with(string_t, string_t);	// since v1.0
@@ -746,6 +747,25 @@ string_t map_to_string(map_t m)
 		s = str_concat(s, any_to_string(m->__v__));
 	}
 	s = str_concat(s, "}");
+	return s;
+}
+
+string_t num_to_string(number_t n)
+{
+	__if_null_to_string__(n);
+	string_t s = str_new_string("0");
+	string_t temp = str_new_string("");
+	for (size_t i = 1; i < n->__len__; i++)
+	{
+		temp = str_concat(str_from_int(n->__v__[i]), temp);
+	}
+	s = str_concat(s, temp);
+	size_t i;
+	for (i = 0; i < str_len(s); i++) {
+		if (s[i] != '0') break;
+	}
+	s = str_substr(s, i, str_len(s));
+	if (n->__v__[0] == _NEGATIVE_) s = str_concat("-", s);
 	return s;
 }
 

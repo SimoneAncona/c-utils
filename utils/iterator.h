@@ -1,5 +1,5 @@
 /**
- * @file map.h
+ * @file iterator.h
  * @author Ancona Simone
  * @brief This library implements iterators for vectors and maps.
  * @version 1.1 (utils 1.1)
@@ -33,7 +33,7 @@ extern size_t str_len(string_t);
 #define begin(x) it(x).ptr
 #define end(x) rit(x).ptr
 
-#define it_get_key(i) ((map_t)i.ptr)->__k__
+#define it_get_key(i) (any_t)/*cannot change keys*/((map_t)i.ptr)->__k__
 #define it_get_value(i) ((map_t)i.ptr)->__v__
 
 #define it_get_el(i) *((any_ptr_t)i.ptr)

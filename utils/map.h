@@ -26,12 +26,14 @@ map_t map_null_map(); // since v1.1
 #define map_get(map, k) __map_get__(map, any_new(k))
 #define map_set(map, k, v) __map_set__(map, any_new(k), any_new(v))
 #define map_remove(map, k) __map_remove__(map, any_new(k))
+#define map_destroy(map) __map_destroy__(map); free(map); map = NULL
 
 bool __map_insert__(map_t, any_t, any_t); // since v1.1
 any_t __map_get__(map_t, any_t);          // since v1.1
 void __map_set__(map_t, any_t, any_t);    // since v1.1
 bool __map_remove__(map_t, any_t);        // since v1.1
 size_t map_len(map_t);                    // since v1.1
+void __map_destroy__(map_t);              // since v1.1
 
 map_t map_new_map()
 {
@@ -144,6 +146,18 @@ bool __map_remove__(map_t m, any_t k)
         return false;
     m->__next__ = temp->__next__;
     return true;
+}
+
+void __map_destroy__(map_t m)
+{
+    map_t next;
+    for (; m->__next__ != NULL; m = next)
+    {
+        next = m->__next__;
+        any_destroy(m->__k__);
+        any_destroy(m->__v__);
+        free(m);
+    }
 }
 
 #endif

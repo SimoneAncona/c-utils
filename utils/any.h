@@ -20,6 +20,7 @@
 extern string_t str_new_string(char_ptr_t);
 
 #define __any_alloc__() (any_t) malloc(sizeof(__any_struct_t__))
+#define any_destroy(X) __any_destroy__(X); X = NULL
 #define any_new(X) _Generic((X),\
 	int16_t: __any_int__,\
 	int32_t: __any_int__,\
@@ -129,6 +130,7 @@ bool *any_get_boolean_ptr(any_t);	// since v1.0
 string_ptr_t any_get_string_ptr(any_t);	// since v1.0
 type_t any_typeof(any_t);	// since v1.0
 bool any_equals(any_t, any_t);	// since v1.1
+void __any_destroy__(any_t);	// since v1.1
 // TODO: continue with other types
 
 
@@ -457,6 +459,7 @@ bool any_equals(any_t a, any_t b)
 	default:
 		return false;
 	}
+	return true;
 }
 
 #endif
