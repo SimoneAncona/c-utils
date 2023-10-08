@@ -22,7 +22,7 @@ int main(int argc, char **argv)
     printf("%s\n", to_string(vec));
 
     int_vector_t ivec = int_vec_init(6, -23, 4, -2, 20, 45, 0);
-    printf("%s\n", to_string(ivec));
+    // printf("%s\n", to_string(ivec));
     vec_sort(ivec, false);
     printf("%s\n", to_string(ivec));
 }

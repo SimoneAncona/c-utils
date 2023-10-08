@@ -1,1 +1,1 @@
-clang .\test.c -o a.exe -I..\utils\ -g
+clang .\test.c -o a.exe -I..\utils\ -g -std=c2x

@@ -21,8 +21,12 @@ int main(int argc, char **argv)
 
    //  printf("%s\n", to_string(vec));
 
-   int_vector_t ivec = int_vec_init(6, -23, 4, -2, 20, 45, 0);
-   printf("%s\n", to_string(ivec));
-   vec_sort(ivec, false);
-   printf("%s\n", to_string(ivec));
+   double_vector_t dvec = double_vector(0);
+   for (size_t i = 0; i < 2'00; i++) 
+   {
+      double_vec_append(dvec, i % 2 ? -i : i * 2);
+   }
+
+   vec_sort(dvec, true);
+   printf("%s\n", to_string(dvec));
 }

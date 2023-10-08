@@ -198,16 +198,15 @@ size_t __str_vec_len__(string_vector_t);
 		__vec_resize__(v);            \
 	v->__v__[v->__len__] = e;         \
 	v->__len__++
-#define __vec_resize__(v) _Generic((v),                                     \
-	vector_t: __vec_res__,                                                  \
-	int_vector_t: __int_vec_res__,                                          \
-	uint_vector_t: __uint_vec_res__,                                        \
-	byte_vector_t: __byte_vec_res__,                                        \
-	float_vector_t: __float_vec_res__,                                      \
-	double_vector_t: __double_vec_res__,                                    \
-	boolean_vector_t: __bool_vec_res__,                                     \
-	string_vector_t: __str_vec_res__ /*ustring_vector_t: __ustr_vec_res__*/ \
-								   )(v)
+#define __vec_resize__(v) _Generic((v),  \
+	vector_t: __vec_res__,               \
+	int_vector_t: __int_vec_res__,       \
+	uint_vector_t: __uint_vec_res__,     \
+	byte_vector_t: __byte_vec_res__,     \
+	float_vector_t: __float_vec_res__,   \
+	double_vector_t: __double_vec_res__, \
+	boolean_vector_t: __bool_vec_res__,  \
+	string_vector_t: __str_vec_res__)(v)
 
 void __vec_res__(vector_t);
 void __int_vec_res__(int_vector_t);
@@ -461,22 +460,6 @@ string_vector_t str_vec_subvec(string_vector_t, size_t, size_t);
 	v->__v__[(size_t)i2 % v->__len__] = (uint_t)v->__v__[(size_t)i1 % v->__len__] ^ (uint_t)v->__v__[(size_t)i2 % v->__len__]; \
 	v->__v__[(size_t)i1 % v->__len__] = (uint_t)v->__v__[(size_t)i1 % v->__len__] ^ (uint_t)v->__v__[(size_t)i2 % v->__len__]
 
-#define __vec_sort__(v, r, start, end)     \
-	if (end - start <= 1)                  \
-		return;                            \
-	size_t i;                              \
-	for (i = 0; i < end - 1; i++)          \
-	{                                      \
-		if (v->__v__[i] > v->__v__[i + 1]) \
-		{                                  \
-			vec_swap(v, i, i + 1);         \
-		}                                  \
-		else                               \
-			break;                         \
-	}                                      \
-	r(v, false, start, i);                 \
-	r(v, false, i, end);
-
 /**
  * Revesre the vector
  * @param v the vector
@@ -486,6 +469,61 @@ string_vector_t str_vec_subvec(string_vector_t, size_t, size_t);
 	for (size_t i = 0; i < v->__len__ / 2; i++) \
 	{                                           \
 		vec_swap(v, i, v->__len__ - 1 - i);     \
+	}
+
+#define __vec_remove__(v, i, t, n)         \
+	if (i < v->__len__)                    \
+	{                                      \
+		t r = v->__v__[i];                 \
+		for (; i < v->__len__ - 1; i++)    \
+		{                                  \
+			v->__v__[i] = v->__v__[i + 1]; \
+		}                                  \
+		v->__len__--;                      \
+		return r;                          \
+	}                                      \
+	return n;
+
+#define __vec_just_remove__(v, i)                   \
+	if (i < v->__len__)                             \
+	{                                               \
+		for (size_t j = i; j < v->__len__ - 1; j++) \
+		{                                           \
+			v->__v__[j] = v->__v__[j + 1];          \
+		}                                           \
+		v->__len__--;                               \
+	}
+
+any_t vec_remove(vector_t, size_t);
+int_t int_vec_remove(int_vector_t, size_t);
+uint_t uint_vec_remove(uint_vector_t, size_t);
+byte_t byte_vec_remove(byte_vector_t, size_t);
+float float_vec_remove(float_vector_t, size_t);
+double double_vec_remove(double_vector_t, size_t);
+bool bool_vec_remove(boolean_vector_t, size_t);
+string_t str_vec_remove(string_vector_t, size_t);
+
+void vec_insert(vector_t, size_t, any_t);
+void int_vec_insert(int_vector_t, size_t, int_t);
+void uint_vec_insert(uint_vector_t, size_t, uint_t);
+void byte_vec_insert(byte_vector_t, size_t, byte_t);
+void float_vec_insert(float_vector_t, size_t, float);
+void double_vec_insert(double_vector_t, size_t, double);
+void bool_vec_insert(boolean_vector_t, size_t, bool);
+void str_vec_insert(string_vector_t, size_t, string_t);
+
+#define __vec_insert__(v, i, e)                     \
+	if (i < v->__len__)                         \
+	{                                           \
+		size_t j;\
+		if (v->__len__ == v->__max_len__)\
+		{\
+			__vec_resize__(v);                  \
+		}\
+		v->__len__++;                           \
+		for (j = v->__len__; j > i; j--) \
+			v->__v__[j] = v->__v__[j - 1];      \
+		v->__v__[i] = e;                        \
 	}
 
 vector_t vec_new_vector(size_t len)
@@ -741,34 +779,51 @@ void __ustr_vec_res__(ustring_vector_t v)
 	v->__v__ = (unique_string_ptr_t)realloc(v->__v__, sizeof(unique_string_t) * v->__max_len__);
 }
 
-#define __vec_init__(len, t, v)\
-	va_list args;\
-	va_start(args, len);\
-	for (size_t i = 0; i < len; i++)\
-	{\
-		v->__v__[i] = va_arg(args, t);\
-	}\
+#define __vec_init__(len, t, v)        \
+	va_list args;                      \
+	va_start(args, len);               \
+	for (size_t i = 0; i < len; i++)   \
+	{                                  \
+		v->__v__[i] = va_arg(args, t); \
+	}                                  \
 	return v;
 
-#define __vec_any_init__(len)\
-	vector_t v = vector(len);\
-	va_list args;\
-	va_start(args, len);\
-	for (size_t i = 0; i < len; i++)\
-	{\
-		v->__v__[i] = any_new(va_arg(args, any_t));\
-	}\
+#define __vec_any_init__(len)                       \
+	vector_t v = vector(len);                       \
+	va_list args;                                   \
+	va_start(args, len);                            \
+	for (size_t i = 0; i < len; i++)                \
+	{                                               \
+		v->__v__[i] = any_new(va_arg(args, any_t)); \
+	}                                               \
 	return v;
 
-#define __str_vec_init__(len)\
-	string_vector_t v = string_vector(len);\
-	va_list args;\
-	va_start(args, len);\
-	for (size_t i = 0; i < len; i++)\
-	{\
-		v->__v__[i] = str_new_string(va_arg(args, char_ptr_t));\
-	}\
+#define __str_vec_init__(len)                                   \
+	string_vector_t v = string_vector(len);                     \
+	va_list args;                                               \
+	va_start(args, len);                                        \
+	for (size_t i = 0; i < len; i++)                            \
+	{                                                           \
+		v->__v__[i] = str_new_string(va_arg(args, char_ptr_t)); \
+	}                                                           \
 	return v;
+
+#define __vec_sort__(v, r, start, end, ins)         \
+	if (end - start <= 1)                      \
+		return;                                \
+	size_t i;                                  \
+	size_t p = start;                              \
+	for (i = start + 1; i < end; i++)          \
+	{                                          \
+		if (v->__v__[i] < v->__v__[p])     \
+		{                                      \
+			ins(v, start, v->__v__[i]); \
+			__vec_just_remove__(v, i + 1);     \
+			p++;                               \
+		}                                      \
+	}                                          \
+	r(v, false, start, p + 1);                 \
+	r(v, false, p + 1, end);
 
 vector_t vec_init(size_t len, ...);
 int_vector_t int_vec_init(size_t len, ...);
@@ -778,7 +833,6 @@ float_vector_t float_vec_init(size_t len, ...);
 double_vector_t double_vec_init(size_t len, ...);
 boolean_vector_t bool_vec_init(size_t len, ...);
 string_vector_t str_vec_init(size_t len, ...);
-
 
 void int_vec_append(int_vector_t v, int_t e) { __vec_append__(v, e); }
 void uint_vec_append(uint_vector_t v, uint_t e) { __vec_append__(v, e); }
@@ -844,48 +898,93 @@ double_vector_t double_vec_subvec(double_vector_t v, size_t start, size_t end) {
 boolean_vector_t bool_vec_subvec(boolean_vector_t v, size_t start, size_t end) { __vec_subvec__(v, boolean_vector_t, start, end); }
 string_vector_t str_vec_subvec(string_vector_t v, size_t start, size_t end) { __vec_subvec__(v, string_vector_t, start, end); }
 
+extern string_t int_vec_to_string(int_vector_t);
+
 void int_vec_sort(int_vector_t v, bool reversed, size_t start, size_t end)
 {
-	__vec_sort__(v, int_vec_sort, start, end);
+	__vec_sort__(v, int_vec_sort, start, end, int_vec_insert);
 	if (reversed)
 		vec_reverse(v);
 }
 
 void uint_vec_sort(uint_vector_t v, bool reversed, size_t start, size_t end)
 {
-	__vec_sort__(v, uint_vec_sort, start, end);
+	__vec_sort__(v, uint_vec_sort, start, end, uint_vec_insert);
 	if (reversed)
 		vec_reverse(v);
 }
 
 void byte_vec_sort(byte_vector_t v, bool reversed, size_t start, size_t end)
 {
-	__vec_sort__(v, byte_vec_sort, start, end);
+	__vec_sort__(v, byte_vec_sort, start, end, byte_vec_insert);
 	if (reversed)
 		vec_reverse(v);
 }
 
 void float_vec_sort(float_vector_t v, bool reversed, size_t start, size_t end)
 {
-	__vec_sort__(v, float_vec_sort, start, end);
+	__vec_sort__(v, float_vec_sort, start, end, float_vec_insert);
 	if (reversed)
 		vec_reverse(v);
 }
 
 void double_vec_sort(double_vector_t v, bool reversed, size_t start, size_t end)
 {
-	__vec_sort__(v, double_vec_sort, start, end);
+	__vec_sort__(v, double_vec_sort, start, end, double_vec_insert);
 	if (reversed)
 		vec_reverse(v);
 }
 
 vector_t vec_init(size_t len, ...) { __vec_any_init__(len); }
-int_vector_t int_vec_init(size_t len, ...) { int_vector_t v = int_vector(len); __vec_init__(len, int, v); }
-uint_vector_t uint_vec_init(size_t len, ...) { uint_vector_t v = uint_vector(len); __vec_init__(len, int, v); }
-byte_vector_t byte_vec_init(size_t len, ...) { byte_vector_t v = byte_vector(len); __vec_init__(len, int, v); }
-float_vector_t float_vec_init(size_t len, ...) { float_vector_t v = float_vector(len); __vec_init__(len, double, v); }
-double_vector_t double_vec_init(size_t len, ...) { double_vector_t v = double_vector(len); __vec_init__(len, double, v); }
-boolean_vector_t bool_vec_init(size_t len, ...) { boolean_vector_t v = boolean_vector(len); __vec_init__(len, int, v); }
+int_vector_t int_vec_init(size_t len, ...)
+{
+	int_vector_t v = int_vector(len);
+	__vec_init__(len, int, v);
+}
+uint_vector_t uint_vec_init(size_t len, ...)
+{
+	uint_vector_t v = uint_vector(len);
+	__vec_init__(len, int, v);
+}
+byte_vector_t byte_vec_init(size_t len, ...)
+{
+	byte_vector_t v = byte_vector(len);
+	__vec_init__(len, int, v);
+}
+float_vector_t float_vec_init(size_t len, ...)
+{
+	float_vector_t v = float_vector(len);
+	__vec_init__(len, double, v);
+}
+double_vector_t double_vec_init(size_t len, ...)
+{
+	double_vector_t v = double_vector(len);
+	__vec_init__(len, double, v);
+}
+boolean_vector_t bool_vec_init(size_t len, ...)
+{
+	boolean_vector_t v = boolean_vector(len);
+	__vec_init__(len, int, v);
+}
+
 string_vector_t str_vec_init(size_t len, ...) { __str_vec_init__(len); }
+
+any_t vec_remove(vector_t v, size_t i) { __vec_remove__(v, i, any_t, NULL); }
+int_t int_vec_remove(int_vector_t v, size_t i) { __vec_remove__(v, i, int_t, 0); }
+uint_t uint_vec_remove(uint_vector_t v, size_t i) { __vec_remove__(v, i, uint_t, 0); }
+byte_t byte_vec_remove(byte_vector_t v, size_t i) { __vec_remove__(v, i, byte_t, 0); }
+float float_vec_remove(float_vector_t v, size_t i) { __vec_remove__(v, i, float, 0); }
+double double_vec_remove(double_vector_t v, size_t i) { __vec_remove__(v, i, double, 0); }
+bool bool_vec_remove(boolean_vector_t v, size_t i) { __vec_remove__(v, i, bool, false); }
+string_t str_vec_remove(string_vector_t v, size_t i) { __vec_remove__(v, i, string_t, str_null_string()); }
+
+void vec_insert(vector_t v, size_t i, any_t e) { __vec_insert__(v, i, e); }
+void int_vec_insert(int_vector_t v, size_t i, int_t e) { __vec_insert__(v, i, e); }
+void uint_vec_insert(uint_vector_t v, size_t i, uint_t e) { __vec_insert__(v, i, e); }
+void byte_vec_insert(byte_vector_t v, size_t i, byte_t e) { __vec_insert__(v, i, e); }
+void float_vec_insert(float_vector_t v, size_t i, float e) { __vec_insert__(v, i, e); }
+void double_vec_insert(double_vector_t v, size_t i, double e) { __vec_insert__(v, i, e); }
+void bool_vec_insert(boolean_vector_t v, size_t i, bool e) { __vec_insert__(v, i, e); }
+void str_vec_insert(string_vector_t v, size_t i, string_t e) { __vec_insert__(v, i, e); }
 
 #endif
