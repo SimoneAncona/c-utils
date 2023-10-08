@@ -50,7 +50,7 @@ extern size_t str_len(string_t);
  * @return a pointer to the first element of the iterable
  * @since v1.1
 */
-#define begin(x) it(x).ptr
+#define it_begin(x) it(x).ptr
 
 /**
  * Get the last element of an iterable
@@ -58,7 +58,7 @@ extern size_t str_len(string_t);
  * @return a pointer to the last element of the iterable
  * @since v1.1
 */
-#define end(x) rit(x).ptr
+#define it_end(x) rit(x).ptr
 
 /**
  * Get a key from a map iterator

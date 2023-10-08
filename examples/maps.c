@@ -26,7 +26,7 @@ int main(int argc, char **argv)
     printf("map: %s\n", to_string(map));    // expected output: {"key2": "value2", "key3": "value3"}
 
     // map iterator
-    for (iterator_t i = it(map); i.ptr != end(map); it_inc(&i))
+    for (iterator_t i = it(map); i.ptr != it_end(map); it_inc(&i))
     {
         printf("%s: %s\n", to_string(it_key(i)), to_string(it_value(i)));
         if (any_equals(it_key(i), any_new("name")))

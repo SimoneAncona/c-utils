@@ -14,6 +14,12 @@
 
 #pragma once
 
+/**
+ * Get the length of an object
+ * @param X the object
+ * @return the length of the object
+ * @since v1.0
+*/
 #define len(X) _Generic((X),\
 	string_t: str_len,\
 	unique_string_t: ustr_len,\
@@ -24,8 +30,14 @@
 	float_vector_t: __float_vec_len__,\
 	double_vector_t: __double_vec_len__,\
 	boolean_vector_t: __boolean_vec_len__\
-) (X) // since v1.0
+) (X)
 
+/**
+ * Check if a value is null
+ * @param X the value
+ * @return true or false
+ * @since v1.0
+*/
 #define is_null(X) _Generic((X),\
 	int8_t: __int_is_null__,\
 	int16_t: __int_is_null__,\
@@ -49,8 +61,13 @@
 	string_vector_t: __str_vec_is_null__,\
 	ustring_vector_t: __ustr_vec_is_null__,\
 	any_t: __any_is_null__\
-) (X) // since v1.0
+) (X)
 
+/**
+ * Convert an object into its string representation
+ * @return the string representation of the object
+ * @since v1.0
+*/
 #define to_string(X) _Generic((X),\
 	int16_t: str_from_int,\
 	int32_t: str_from_int,\
@@ -76,7 +93,7 @@
 	ustring_vector_t: ustr_vec_to_string,\
 	map_t: map_to_string,\
 	default: str_from_uint\
-) (X) // since v1.0
+) (X)
 
 #define to_unique_string(X) _Generic((X),\
 	int8_t: ustr_from_int,\

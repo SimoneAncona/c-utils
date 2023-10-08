@@ -12,7 +12,7 @@ int main(int argc, char **argv)
 
     printf("%s\n", to_string(vec));
 
-    for (iterator_t i = it(vec); i.ptr < end(vec); it_inc(&i))
+    for (iterator_t i = it(vec); i.ptr < it_end(vec); it_inc(&i))
     {
         printf("%s\n", to_string(it_el(any_ptr_t, i)));
         if (it_el(any_ptr_t, i) != NULL)
@@ -21,5 +21,8 @@ int main(int argc, char **argv)
 
     printf("%s\n", to_string(vec));
 
-    int_vector_t ivec = vec_new_int_vector(10);
+    int_vector_t ivec = int_vec_init(6, -23, 4, -2, 20, 45, 0);
+    printf("%s\n", to_string(ivec));
+    vec_sort(ivec, false);
+    printf("%s\n", to_string(ivec));
 }
