@@ -37,7 +37,7 @@ extern byte_vector_t byte_vec_new_vector(size_t);
 extern void byte_vec_append(byte_vector_t v, byte_t e);
 
 #define __is_not_valid_number__(num) (num == NULL || num->__len__ <= 1)
-number_t num_new(void);
+number_t number(void);
 number_t num_sum(number_t, number_t);
 number_t num_diff(number_t, number_t);
 number_t num_opposite(number_t);
@@ -48,7 +48,7 @@ int_t num_to_int(number_t);
 number_t int_to_num(int_t);
 number_t str_to_num(string_t);
 
-number_t num_new()
+number_t number()
 {
     number_t n = byte_vec_new_vector(2);
     return n;
@@ -68,7 +68,7 @@ number_t num_sum(number_t n1, number_t n2)
 {
     if (__is_not_valid_number__(n1)) return NULL;
     if (__is_not_valid_number__(n2)) return NULL;
-    number_t n = num_new();
+    number_t n = number();
     if (n2->__v__[0] == n1->__v__[0])
     {
         n->__v__[0] = n1->__v__[0];
@@ -98,7 +98,7 @@ number_t num_sum(number_t n1, number_t n2)
 
 number_t int_to_num(int_t n)
 {
-    number_t r = num_new();
+    number_t r = number();
     r->__v__[0] = n < 0 ? _NEGATIVE_ : _POSITIVE_;
     if (n < 0) n = -n;
     for (size_t i = 1; n > 0; i++) {
@@ -112,7 +112,7 @@ number_t int_to_num(int_t n)
 
 number_t str_to_num(string_t s)
 {
-    number_t n = num_new();
+    number_t n = number();
     size_t i = 0;
     size_t j = 1;
     bool is_negative = false;

@@ -39,54 +39,384 @@
 
 #define __if_null_to_string__(x) if (x == NULL) return str_new_string("null")
 
-string_t __str_pool_ref__(char_ptr_t);	// since v1.0
-// string_t str_new_string(char_ptr_t);	// since v1.0
-string_t str_lower_case(string_t);	// since v1.0
-string_t str_upper_case(string_t);	// since v1.0
-string_t str_substr(string_t, size_t, size_t);	// since v1.0
-string_t str_replace(string_t, string_t, string_t);	// since v1.0
-string_t str_concat(string_t, string_t);	// since v1.0
-string_t str_from_char(char_t);	// since v1.0
-string_t str_from_int(int_t);	// since v1.0
-string_t str_from_int_base(int_t, uint8_t);	// since v1.0
-string_t str_from_uint(uint_t);	// since v1.0
-string_t str_from_uint_base(uint_t, uint8_t);	// since v1.0
-string_t str_from_float(float);	// since v1.0
-string_t str_from_double(double);	// since v1.0
-string_t str_from_boolean(bool);	// since v1.0
-string_t __str_to_string__(string_t);	// since v1.0
-string_t __ustr_to_string__(unique_string_t);	// since v1.0
-string_t vec_to_string(vector_t);	// since v1.0
-string_t int_vec_to_string(int_vector_t);	// since v1.0
-string_t uint_vec_to_string(uint_vector_t);	// since v1.0
-string_t byte_vec_to_string(byte_vector_t);	// since v1.0
-string_t float_vec_to_string(float_vector_t);	// since v1.0
-string_t double_vec_to_string(double_vector_t);	// since v1.0
-string_t bool_vec_to_string(boolean_vector_t);	// since v1.0
-string_t str_vec_to_string(string_vector_t);	// since v1.0
-string_t ustr_vec_to_string(ustring_vector_t);	// since v1.0
-string_t any_to_string(any_t); 	// since v1.0
-string_t num_to_string(number_t);	// since v1.1
-uint8_t str_cmp(string_t, string_t);	// since v1.0
-char_t str_char_at(string_t, size_t);	// since v1.0
-bool str_starts_with(string_t, string_t);	// since v1.0
-bool str_ends_with(string_t, string_t);	// since v1.0
-bool str_includes(string_t, string_t);	// since v1.0
-bool str_destroy(string_t);	// since v1.0
-bool str_is_int(string_t);	// since v1.0
-bool str_is_number(string_t);	// since v1.0
-bool str_is_alpha(string_t);	// since v1.0
-bool str_is_alnum(string_t);	// since v1.0
-bool str_is_identifier(string_t);	// since v1.0
-bool str_is_lower(string_t);	// since v1.0
-bool str_is_upper(string_t);	// since v1.0
-#define str_equals(s1, s2) s1 == s2;	// since v1.0
-bool __str_is_null__(string_t);	// since v1.0
-size_t str_index_of(string_t, string_t);	// since v1.0
-size_t str_last_index_of(string_t, string_t);	// since v1.0
-size_t str_len(string_t);	// since v1.0
-void __str_pool_append__(string_t);	// since v1.0
-void __str_copy__(char_ptr_t, char_ptr_t);	// since v1.0
+
+string_t __str_pool_ref__(char_ptr_t);
+
+/**
+ * Create a new string
+ * @param s a c string
+ * @return a new string
+ * @since v1.0
+*/
+string_t str_new_string(char_ptr_t);
+
+/**
+ * Create a new string
+ * @param s a c string
+ * @return a new string
+ * @since v1.1
+*/
+#define string(s) str_new_string(s)
+
+/**
+ * Get the lower case version of a string
+ * @param s the string
+ * @return a new string
+ * @since v1.0
+*/
+string_t str_lower_case(string_t);
+
+/**
+ * Get the upper case version of a string
+ * @param s the string
+ * @return a new string
+ * @since v1.0
+*/
+string_t str_upper_case(string_t);
+
+/**
+ * Get a sub string in the given string
+ * @param s the string
+ * @param start the starting index (included)
+ * @param end the ending index (excluded)
+ * @return the sub string
+ * @since v1.0
+*/
+string_t str_substr(string_t, size_t, size_t);	
+
+/**
+ * Replace all the occurences of a substring wit a new string
+ * @param s the string
+ * @param old_str the substring to replace
+ * @param new_str the new substring
+ * @return the new string
+ * @since v1.0
+*/
+string_t str_replace(string_t, string_t, string_t);	
+
+/**
+ * Concatenate two strings
+ * @param s1 the first string
+ * @param s2 the second string
+ * @return the concatenated string
+ * @since v1.0
+*/
+string_t str_concat(string_t, string_t);	
+
+/**
+ * Convert a character to a string
+ * @param c the character
+ * @return a new string
+ * @since v1.0
+*/
+string_t str_from_char(char_t);	
+
+/**
+ * Convert an integer to a string
+ * @param n the integer
+ * @return a new string
+ * @since v1.0
+*/
+string_t str_from_int(int_t);	
+
+/**
+ * Convert an integer to a string
+ * @param n the integer
+ * @param base the base of the integer
+ * @return a new string
+ * @since v1.0
+*/
+string_t str_from_int_base(int_t, uint8_t);	
+
+/**
+ * Convert a unsigned integer to a string
+ * @param n the unsigned integer
+ * @return a new string
+ * @since v1.0
+*/
+string_t str_from_uint(uint_t);	
+
+/**
+ * Convert a unsigned integer to a string
+ * @param n the unsigned integer
+ * @param base the base of the unsigned integer
+ * @return a new string
+ * @since v1.0
+*/
+string_t str_from_uint_base(uint_t, uint8_t);	
+
+/**
+ * Convert a float to a string
+ * @param f the float
+ * @return a new string
+ * @since v1.0
+*/
+string_t str_from_float(float);	
+
+/**
+ * Convert a double to a string
+ * @param d the double
+ * @return a new string
+ * @since v1.0
+*/
+string_t str_from_double(double);	
+
+/**
+ * Convert a boolean to a string
+ * @param b the boolean
+ * @return a new string
+ * @since v1.0
+*/
+string_t str_from_boolean(bool);	
+
+string_t __str_to_string__(string_t);	
+string_t __ustr_to_string__(unique_string_t);	
+
+/**
+ * Convert a vector to its string representation
+ * @param v the vector
+ * @return the string representation of the vector
+ * @since v1.0
+*/
+string_t vec_to_string(vector_t);	
+
+/**
+ * Convert a vector to its string representation
+ * @param v the vector
+ * @return the string representation of the vector
+ * @since v1.0
+*/
+string_t int_vec_to_string(int_vector_t);	
+
+/**
+ * Convert a vector to its string representation
+ * @param v the vector
+ * @return the string representation of the vector
+ * @since v1.0
+*/
+string_t uint_vec_to_string(uint_vector_t);	
+
+/**
+ * Convert a vector to its string representation
+ * @param v the vector
+ * @return the string representation of the vector
+ * @since v1.0
+*/
+string_t byte_vec_to_string(byte_vector_t);	
+
+/**
+ * Convert a vector to its string representation
+ * @param v the vector
+ * @return the string representation of the vector
+ * @since v1.0
+*/
+string_t float_vec_to_string(float_vector_t);	
+
+/**
+ * Convert a vector to its string representation
+ * @param v the vector
+ * @return the string representation of the vector
+ * @since v1.0
+*/
+string_t double_vec_to_string(double_vector_t);	
+
+/**
+ * Convert a vector to its string representation
+ * @param v the vector
+ * @return the string representation of the vector
+ * @since v1.0
+*/
+string_t bool_vec_to_string(boolean_vector_t);	
+
+/**
+ * Convert a vector to its string representation
+ * @param v the vector
+ * @return the string representation of the vector
+ * @since v1.0
+*/
+string_t str_vec_to_string(string_vector_t);	
+
+/**
+ * Convert a vector to its string representation
+ * @param v the vector
+ * @return the string representation of the vector
+ * @since v1.0
+*/
+string_t ustr_vec_to_string(ustring_vector_t);	
+
+/**
+ * Convert an any value into a string
+ * @param a the any value
+ * @return a new string
+ * @since v1.0
+*/
+string_t any_to_string(any_t); 	
+
+/**
+ * Convert a number into a string
+ * @param n the number
+ * @return a new string
+ * @since v1.1
+*/
+string_t num_to_string(number_t);	
+
+
+/**
+ * Convert a map into its string representation
+ * @param m the map
+ * @return the string representation of the map
+ * @since v1.1
+*/
+string_t map_to_string(map_t);
+
+/**
+ * Compare two strings
+ * @param s1 the first string
+ * @param s2 the second string
+ * @return
+ * - GRATER if s1 length > s2 length
+ * - LESS if s1 length < s2 length
+ * - NOT_EQUAL if s1 length == s2 length and s1 and s2 are different
+ * - EQUAL if s1 == s2
+ * @since v1.0
+*/
+uint8_t str_cmp(string_t, string_t);	
+
+/**
+ * Get the char at the given index
+ * @param s the string
+ * @param i the index
+ * @return the char
+ * @since v1.0
+*/
+char_t str_char_at(string_t, size_t);	
+
+/**
+ * Check if a string starts with a given substring
+ * @param main_str the string
+ * @param sub_str the substring
+ * @return true if the string starts with the substring, false otherwise
+ * @since v1.0
+*/
+bool str_starts_with(string_t, string_t);	
+
+/**
+ * Check if a string ends with a given substring
+ * @param main_str the string
+ * @param sub_str the substring
+ * @return true if the string ends with the substring, false otherwise
+ * @since v1.0
+*/
+bool str_ends_with(string_t, string_t);	
+
+/**
+ * Check if a string contains a given substring
+ * @param main_str the string
+ * @param sub_str the substring
+ * @return true if the string contains the substring, false otherwise
+ * @since v1.0
+*/
+bool str_includes(string_t, string_t);	
+
+/**
+ * Destroy a string
+ * @return true if the string was destroyed, false otherwise
+ * @since v1.0
+*/
+bool str_destroy(string_t);	
+
+/**
+ * Check if a string represents an integer
+ * @param s the string
+ * @return true or false
+ * @since v1.0
+*/
+bool str_is_int(string_t);	
+
+/**
+ * Check if a string represents a real number
+ * @param s the string
+ * @return true or false
+ * @since v1.0
+*/
+bool str_is_number(string_t);	
+
+/**
+ * Check if the strings contains only alpha characters
+ * @param s the string
+ * @return true or false
+ * @since v1.0
+*/
+bool str_is_alpha(string_t);	
+
+/**
+ * Check if the strings contains only alphanumeric characters
+ * @param s the string
+ * @return true or false
+ * @since v1.0
+*/
+bool str_is_alnum(string_t);	
+
+/**
+ * Check if the string is a valid indentifier
+ * @param s the string
+ * @return true or false
+ * @since v1.0
+*/
+bool str_is_identifier(string_t);	
+
+/**
+ * Check if the string is in lower case
+ * @param s the string
+ * @return true if the string is in lower case, false otherwise
+ * @since v1.0
+*/
+bool str_is_lower(string_t);	
+
+/**
+ * Check if the string is in upper case
+ * @param s the string
+ * @return true if the string is in upper case, false otherwise
+ * @since v1.0
+*/
+bool str_is_upper(string_t);	
+
+/**
+ * Check if two strings are the same
+ * @param s1 the first string
+ * @param s2 the second string
+ * @since v1.0
+*/
+#define str_equals(s1, s2) s1 == s2;	
+
+bool __str_is_null__(string_t);	
+
+/**
+ * Get the index of the first occurence of a substring in a string
+ * @param main_str the string
+ * @param sub_str the substring
+ * @return the index of the first occurence of the substring in the string, -1 if
+ * @since v1.0
+*/
+size_t str_index_of(string_t, string_t);	
+
+/**
+ * Get the index of the last occurence of a substring in a string
+ * @param main_str the string
+ * @param sub_str the substring
+ * @return the index of the last occurence of the substring in the string, -1 if
+ * @since v1.0
+*/
+size_t str_last_index_of(string_t, string_t);	
+
+/**
+ * Get the index of a string
+ * @return the length of the string
+ * @since v1.0
+*/
+size_t str_len(string_t);	
+void __str_pool_append__(string_t);	
+void __str_copy__(char_ptr_t, char_ptr_t);	
 
 __str_ref_info_t__ *__str_pool__ = NULL;
 size_t __str_pool_size__ = __INITAL_STR_POOL_SIZE___;

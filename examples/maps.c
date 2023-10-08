@@ -28,11 +28,11 @@ int main(int argc, char **argv)
     // map iterator
     for (iterator_t i = it(map); i.ptr != end(map); it_inc(&i))
     {
-        printf("%s: %s\n", to_string(it_get_key(i)), to_string(it_get_value(i)));
-        if (any_equals(it_get_key(i), any_new("name")))
-            it_get_value(i) = any_new("Simon");
+        printf("%s: %s\n", to_string(it_key(i)), to_string(it_value(i)));
+        if (any_equals(it_key(i), any_new("name")))
+            it_value(i) = any_new("Simon");
     }
-    printf("%s: %s\n", to_string(it_get_key(rit(map))), to_string(it_get_value(rit(map))));
+    printf("%s: %s\n", to_string(it_key(rit(map))), to_string(it_value(rit(map))));
 
     printf("map: %s\n", to_string(map)); 
 }

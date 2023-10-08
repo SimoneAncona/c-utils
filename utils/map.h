@@ -19,23 +19,67 @@
 
 #define __map_null_check__(m) m->__k__ == NULL;
 
-map_t map_new_map();  // since v1.1
-map_t map_null_map(); // since v1.1
+/**
+ * Create a new map
+ * @return the new map
+ * @since v1.1
+*/
+map_t map();
 
-#define map_insert(map, k, v) __map_insert__(map, any_new(k), any_new(v))
-#define map_get(map, k) __map_get__(map, any_new(k))
-#define map_set(map, k, v) __map_set__(map, any_new(k), any_new(v))
-#define map_remove(map, k) __map_remove__(map, any_new(k))
-#define map_destroy(map) __map_destroy__(map); free(map); map = NULL
+map_t map_null_map();
 
-bool __map_insert__(map_t, any_t, any_t); // since v1.1
-any_t __map_get__(map_t, any_t);          // since v1.1
-void __map_set__(map_t, any_t, any_t);    // since v1.1
-bool __map_remove__(map_t, any_t);        // since v1.1
-size_t map_len(map_t);                    // since v1.1
-void __map_destroy__(map_t);              // since v1.1
+/**
+ * Insert a new key-value pair into the map
+ * @param m the map
+ * @param k the key
+ * @param v the value
+ * @return true if successful
+ * @since v1.1
+*/
+#define map_insert(m, k, v) __map_insert__(m, any_new(k), any_new(v))
 
-map_t map_new_map()
+/**
+ * Get the value associated with the key
+ * @param m the map
+ * @param k the key
+ * @return the value associated with the key or null
+ * @since v1.1
+*/
+#define map_get(m, k) __map_get__(m, any_new(k))
+
+/**
+ * Set the value associated with the key
+ * @param m the map
+ * @param k the key
+ * @param v the new value
+ * @return the old value associated with the key or null
+ * @since v1.1
+*/
+#define map_set(m, k, v) __map_set__(m, any_new(k), any_new(v))
+
+/**
+ * Remove the key-value pair from the map
+ * @param m the map
+ * @param k the key
+ * @return true if successful
+ * @since v1.1
+*/
+#define map_remove(m, k) __map_remove__(m, any_new(k))
+
+/**
+ * Destroy the map
+ * @param m the map
+*/
+#define map_destroy(m) __map_destroy__(m); free(m); m = NULL
+
+bool __map_insert__(map_t, any_t, any_t); 
+any_t __map_get__(map_t, any_t);          
+any_t __map_set__(map_t, any_t, any_t);    
+bool __map_remove__(map_t, any_t);        
+size_t map_len(map_t);                    
+void __map_destroy__(map_t);              
+
+map_t map()
 {
     return map_null_map();
 }
@@ -109,16 +153,19 @@ any_t __map_get__(map_t m, any_t k)
     return any_null();
 }
 
-void __map_set__(map_t m, any_t k, any_t v)
+any_t __map_set__(map_t m, any_t k, any_t v)
 {
+    any_t old_v;
     for (; m->__next__ != NULL; m = m->__next__)
     {
         if (any_equals(m->__k__, k))
         {
+            old_v = m->__v__;
             m->__v__ = v;
-            return;
+            return old_v;
         }
     }
+    return NULL;
 }
 
 bool __map_remove__(map_t m, any_t k)

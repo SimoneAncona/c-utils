@@ -18,25 +18,95 @@
 
 extern size_t str_len(string_t);
 
+/**
+ * Create an iterator
+ * @param x an iterable object
+ * @return an iterator
+ * @since v1.1
+*/
 #define it(x) _Generic((x),\
     string_t: __string_it__,\
     vector_t: __vector_it__,\
-    map_t: __map_it__\
+    map_t: __map_it__,\
+    range_t: __range_it__\
 ) (x)
 
+/**
+ * Create a reverse iterator
+ * @param x an iterable object
+ * @return a reverse iterator
+ * @since v1.1
+*/
 #define rit(x) _Generic((x),\
     string_t: __string_rit__,\
     vector_t: __vector_rit__,\
-    map_t: __map_rit__\
+    map_t: __map_rit__,\
+    range_t: __range_rit__\
 ) (x)
 
+/**
+ * Get the first element of an iterable
+ * @param x the iterable
+ * @return a pointer to the first element of the iterable
+ * @since v1.1
+*/
 #define begin(x) it(x).ptr
+
+/**
+ * Get the last element of an iterable
+ * @param x the iterable
+ * @return a pointer to the last element of the iterable
+ * @since v1.1
+*/
 #define end(x) rit(x).ptr
 
-#define it_get_key(i) (any_t)/*cannot change keys*/((map_t)i.ptr)->__k__
-#define it_get_value(i) ((map_t)i.ptr)->__v__
+/**
+ * Get a key from a map iterator
+ * @param i a map iterator
+ * @return the map key
+ * @since v1.1
+*/
+#define it_key(i) (any_t)/*cannot change keys*/((map_t)i.ptr)->__k__
 
-#define it_get_el(i) *((any_ptr_t)i.ptr)
+/**
+ * Get the value from a map iterator
+ * @param i a map iterator
+ * @return the map value
+ * @since v1.1
+*/
+#define it_value(i) ((map_t)i.ptr)->__v__
+
+/**
+ * Get the element pointed by an iterator
+ * @param t the type of the element
+ * @param i an iterator
+ * @return the elemet reference
+ * @since v1.1
+*/
+#define it_el(t, i) *((t)i.ptr)
+
+/**
+ * Get the pointer of the iterator
+ * @param t the type of the element
+ * @param i an iterator
+ * @return the pointer of the iterator
+ * @since v1.1
+*/
+#define it_ptr(t, i) (t)i.ptr
+
+/**
+ * Increment an iterator
+ * @param it the iterator
+ * @since v1.1
+*/
+void it_inc(iterator_t *);
+
+/**
+ * Decrement an iterator
+ * @param it the iterator
+ * @since v1.1
+*/
+void it_dec(iterator_t *);
 
 iterator_t __string_it__(string_t s)
 {
@@ -64,6 +134,16 @@ iterator_t __map_it__(map_t m)
     it.ptr = (void*)m;
     it.__size__ = 0;
     it.__type__ = MAP;
+
+    return it;
+}
+
+iterator_t __range_it__(range_t r)
+{
+    iterator_t it;
+    it.ptr = (void*) (uint_t)r.__start__;
+    it.__size__ = 1;
+    it.__type__ = RANGE;
 
     return it;
 }
@@ -100,12 +180,23 @@ iterator_t __map_rit__(map_t m)
     return it;
 }
 
+iterator_t __range_rit__(range_t r)
+{
+    iterator_t it;
+    it.ptr = (void*) (uint_t)r.__end__;
+    it.__size__ = 1;
+    it.__type__ = RANGE;
+
+    return it;
+}
+
 void it_inc(iterator_ptr_t it)
 {
     switch (it->__type__)
     {
     case STRING:
     case VECTOR:
+    case RANGE:
         it->ptr = (void*) ((uint_t)it->ptr + it->__size__);
         break;
     case MAP:
@@ -120,6 +211,7 @@ void it_dec(iterator_ptr_t it)
     {
     case STRING:
     case VECTOR:
+    case RANGE:
         it->ptr = (void*) ((uint_t)it->ptr - it->__size__);
         break;
     }

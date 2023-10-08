@@ -7,5 +7,7 @@ int main(int argc, char **argv)
 	printf("%zu\n", len(str));	// output: 13
 	string_t from_num = str_from_int(10245);
 
+	printf("%s\n", str_substr(str, 7, len(str)));
+
 	printf("%s\n", str_concat(str, from_num));	// output: Hello, World!10245
 }

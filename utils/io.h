@@ -5,15 +5,48 @@
 #define __TEMP_BUF_SIZE__ 2048
 #define __STR_FORMAT__ "%2048s"
 
-// any_t console_read();	// since v1.1
-int_t console_int_read();	// since v1.0
-uint_t console_uint_read();	// since v1.0
-float console_float_read();	// since v1.0
-double console_double_read();	// since v1.0
-string_t console_str_read();	// since v1.0
-// unique_string_t console_ustr_read();	// since v1.2
-void console_write(any_t);	// since v1.0
-void console_str_write(string_t);	// since v1.0
+// any_t console_read()
+/**
+ * @since v1.0
+ * @deprecated
+*/
+int_t console_int_read();
+
+/**
+ * @since v1.0
+ * @deprecated
+*/
+uint_t console_uint_read();
+
+/**
+ * @since v1.0
+ * @deprecated
+*/
+float console_float_read();	
+
+/**
+ * @since v1.0
+ * @deprecated
+*/
+double console_double_read();
+
+/**
+ * @since v1.0
+ * @deprecated
+*/
+string_t console_str_read();
+
+/**
+ * @since v1.0
+ * @deprecated
+*/
+void console_write(any_t);	
+
+/**
+ * @since v1.0
+ * @deprecated
+*/
+void console_str_write(string_t);	
 // void console_ustr_write(unique_string_t);	// since v1.2
 
 int_t console_int_read()
@@ -23,12 +56,14 @@ int_t console_int_read()
 	return n;
 }
 
+
 uint_t console_uint_read()
 {
 	uint_t n = 0;
 	scanf_s("%u", &n);
 	return n;
 }
+
 
 float console_float_read()
 {
@@ -37,6 +72,9 @@ float console_float_read()
 	return n;
 }
 
+/**
+ * @deprecated
+*/
 double console_double_read()
 {
 	double n = 0;
@@ -44,6 +82,9 @@ double console_double_read()
 	return n;
 }
 
+/**
+ * @deprecated
+*/
 string_t console_str_read()
 {
 	char_t temp_buffer[__TEMP_BUF_SIZE__ + 1] = {0};
@@ -59,16 +100,25 @@ string_t console_str_read()
 // 	return ustr_new_string(temp_buffer);
 // }
 
+/**
+ * @deprecated use printf() instead
+*/
 void console_write(any_t a)
 {
 	printf("%s", to_string(a));
 }
 
+/**
+ * @deprecated use printf() instead
+*/
 void console_str_write(string_t s)
 {
 	printf("%s", s);
 }
 
+/**
+ * @deprecated use printf() instead
+*/
 void console_ustr_write(unique_string_t s)
 {
 	printf("%s", s);

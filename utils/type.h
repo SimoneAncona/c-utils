@@ -154,4 +154,13 @@ typedef iterator_t *iterator_ptr_t;
 
 typedef byte_vector_t number_t;
 
+/**
+ * @since v1.1
+*/
+typedef struct __range_t__
+{
+	double __start__;
+	double __end__;
+} range_t;
+
 #endif

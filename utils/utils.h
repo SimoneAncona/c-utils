@@ -22,6 +22,7 @@
 #include "char.h"
 #include "null.h"
 #include "iterator.h"
+#include "range.h"
 #include "any.h"
 #include "vector.h"
 #include "number.h"
