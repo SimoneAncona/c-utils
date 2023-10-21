@@ -174,15 +174,17 @@ string_vector_t str_vec_new_vector(size_t);
 	_Generic((x),                                \
 		vector_t: __vec_destroy__,               \
 		string_vector_t: __str_vector_destroy__, \
-		default: free)(x);                       \
+		default: __primitive_vector_destroy__)(x);                       \
 	x = NULL
 
 void __vec_destroy__(vector_t);				  // since v1.1
 void __str_vector_destroy__(string_vector_t); // since v1.1
-#define __primitive_vector_destroy__(v) \
-	free(v->__v__);                     \
-	free(v);                            \
-	v = NULL // since v1.1
+// #define __primitive_vector_destroy__(v) \
+// 	free(v->__v__);                     \
+// 	free(v);                            \
+// 	v = NULL // since v1.1
+
+void __primitive_vector_destroy__(void*);
 
 size_t __vec_len__(vector_t);
 size_t __int_vec_len__(int_vector_t);
@@ -461,7 +463,7 @@ string_vector_t str_vec_subvec(string_vector_t, size_t, size_t);
 	v->__v__[(size_t)i1 % v->__len__] = (uint_t)v->__v__[(size_t)i1 % v->__len__] ^ (uint_t)v->__v__[(size_t)i2 % v->__len__]
 
 /**
- * Revesre the vector
+ * Reverse the vector
  * @param v the vector
  * @since v1.0
  */
@@ -494,6 +496,35 @@ string_vector_t str_vec_subvec(string_vector_t, size_t, size_t);
 		v->__len__--;                               \
 	}
 
+/**
+ * Copy the vector src into the vector dest
+ * @param dest the vector
+ * @param src the vector to copy
+ * @since v1.1
+*/
+#define vec_copy(dest, src)\
+	vec_clear(dest);\
+	for (size_t i = 0; i < src->__len__; i++)\
+	{\
+		_Generic((dest),\
+			int_vector_t: int_vec_append,\
+			uint_vector_t: uint_vec_append,\
+			byte_vector_t: byte_vec_append,\
+			float_vector_t: float_vec_append,\
+			double_vector_t: double_vec_append,\
+			boolean_vector_t: bool_vec_append,\
+			string_vector_t: str_vec_append\
+		)(dest, src->__v__[i]);\
+	}\
+
+/**
+ * Remove all the elements from the vector
+ * @param v the vector
+ * @since v1.1
+*/
+#define vec_clear(v)\
+	v->__len__ = 0
+
 any_t vec_remove(vector_t, size_t);
 int_t int_vec_remove(int_vector_t, size_t);
 uint_t uint_vec_remove(uint_vector_t, size_t);
@@ -513,6 +544,10 @@ void bool_vec_insert(boolean_vector_t, size_t, bool);
 void str_vec_insert(string_vector_t, size_t, string_t);
 
 #define __vec_insert__(v, i, e)                     \
+	if (i == v->__len__)\
+	{\
+		__vec_append__(v, e);\
+	}\
 	if (i < v->__len__)                         \
 	{                                           \
 		size_t j;\
@@ -881,12 +916,21 @@ void __vec_destroy__(vector_t v)
 {
 	for (size_t i = 0; i < v->__len__; i++)
 		free(__vec_get__(v, i));
+	free(v);
 }
 
 void __str_vector_destroy__(string_vector_t v)
 {
 	for (size_t i = 0; i < v->__len__; i++)
 		str_destroy(__vec_get__(v, i));
+	free(v);
+}
+
+
+void __primitive_vector_destroy__(void *v)
+{
+	free(((int_vector_t)v)->__v__);
+	free(v);
 }
 
 vector_t vec_subvec(vector_t v, size_t start, size_t end) { __vec_subvec__(v, vector_t, start, end); }

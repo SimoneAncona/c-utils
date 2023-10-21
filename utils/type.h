@@ -30,12 +30,12 @@ typedef uint8_t type_t;
 #define NUMBER /*variable precision*/	(type_t) 5	// available in utils 2.0
 #define STRING 							(type_t) 6
 #define VECTOR 							(type_t) 7
-#define LIST 							(type_t) 8	// available in utils 1.1
+#define LIST 							(type_t) 8	// DELAYED available in utils 1.2
 #define INTEGER_VECTOR 					(type_t) 9
 #define UNSIGNED_INTEGER_VECTOR 		(type_t) 10
 #define FLOAT_VECTOR 					(type_t) 11
 #define DOUBLE_VECTOR 					(type_t) 12
-#define BOOLEAN_VECTOR 					(type_t) 13
+#define BOOLEAN_VECTOR 					(type_t) 13 // will be deprecated in version 1.2
 #define NUMBER_VECTOR 					(type_t) 14
 #define BYTE 							(type_t) 15
 #define BYTE_VECTOR 					(type_t) 16
@@ -54,20 +54,19 @@ typedef uint8_t type_t;
 #define UNSIGNED_INTEGER_VECTOR_PTR 	(type_t) 29
 #define FLOAT_VECTOR_PTR 				(type_t) 30
 #define DOUBLE_VECTOR_PTR				(type_t) 31
-#define BOOLEAN_VECTOR_PTR 				(type_t) 32
+#define BOOLEAN_VECTOR_PTR 				(type_t) 32	// will be deprecated in version 1.2
 #define NUMBER_VECTOR_PTR 				(type_t) 33	// available in utils 2.0
 #define BYTE_PTR 						(type_t) 34
 #define BYTE_VECTOR_PTR 				(type_t) 35	// available in utils 1.1
 #define STRING_VECTOR_PTR				(type_t) 36	// available in utils 1.1
-#define MAP								(type_t) 37	// available in utils 1.1
-#define MAP_PTR							(type_t) 38	// available in utils x.x
-#define MAP_VECTOR						(type_t) 39	// available in utils 1.1
-#define MAP_VECTOR_PTR					(type_t) 40	// available in utils x.x
-#define FUNCTION						(type_t) 41 // available in utils x.x
-#define STREAM							(type_t) 42 // available in utils 1.1
-#define STREAM_PTR						(type_t) 43 // available in utils 1.1
-#define RANGE							(type_t) 44 // available in utils 1.1
-#define RANGE_PTR						(type_t) 45 // available in utils 1.1
+#define MAP								(type_t) 37
+#define MAP_PTR							(type_t) 38
+#define MAP_VECTOR						(type_t) 39
+#define MAP_VECTOR_PTR					(type_t) 40
+#define STREAM							(type_t) 42 // DELAYED available in utils 1.2
+#define STREAM_PTR						(type_t) 43 // DELAYED available in utils 1.2
+#define RANGE							(type_t) 44
+#define RANGE_PTR						(type_t) 45
 #define QUEUE							(type_t) 46 // available in utils 1.2
 #define QUEUE_PTR						(type_t) 47 // available in utils 1.2
 // #define THREAD							(type_t) 48 // available in utils 1.2
@@ -152,7 +151,14 @@ typedef struct __iterator_struct_t__
 
 typedef iterator_t *iterator_ptr_t;
 
-typedef byte_vector_t number_t;
+typedef struct __num_struct__
+{
+	int64_t __e__;
+	byte_vector_t __n__;
+	bool __negative__;
+} __num_struct_t__;
+
+typedef __num_struct_t__ *number_t;
 
 /**
  * @since v1.1

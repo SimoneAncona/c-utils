@@ -92,6 +92,7 @@
 	string_vector_t: str_vec_to_string,\
 	ustring_vector_t: ustr_vec_to_string,\
 	map_t: map_to_string,\
+	number_t: num_to_string,\
 	default: str_from_uint\
 ) (X)
 
